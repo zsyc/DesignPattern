@@ -1,19 +1,26 @@
+from abc import ABC, abstractclassmethod
+from re import M
+
 # Interface for fly and quack
-class FlyBehavior(object):
+# Fly
+class FlyBehavior(ABC):
+    @abstractclassmethod
     def fly(self):
-        pass
+        print("Error, it's base class")
 
 class FlyWithWings(FlyBehavior):
     def fly(self):
-        print("fly")
+        print("duck flying")
 
 class FlyNoWay(FlyBehavior):
     def fly(self):
-        print("cannot fly")        
+        print("duck cannot fly")        
 
-class QuackBehavior(object):
+# Quack
+class QuackBehavior(ABC):
+    @abstractclassmethod
     def quack(self):
-        pass
+        print("Error, it's base class")
 
 class Quack(QuackBehavior):
     def quack(self):
@@ -28,24 +35,34 @@ class MuteQuack(QuackBehavior):
         print("mute")
 
 # Base class
-class Duck(object):
+class Duck(ABC):
+    @abstractclassmethod
     def __init__(self) -> None:
-        self.quackBehavior = QuackBehavior()
-        self.flyBehavior = FlyBehavior()
+        self.quackBehavior = QuackBehavior  # 非实例化，而是reference variable, 用于指导子类赋值
+        self.flyBehavior = FlyBehavior
 
     def swim(self):
-        pass
+        print("all ducks float")
+
     def display(self):
         pass
+    
     def performQuack(self):
         self.quackBehavior.quack()
 
     def performFly(self):
         self.flyBehavior.fly()
 
-# child class
+# Child class
 class MallardDuck(Duck):
     def __init__(self) -> None:
-        super().__init__()
-        self.quackBehavior = Quack()
+        self.quackBehavior = Quack()    # 这里有括号，是实例化
         self.flyBehavior = FlyWithWings()
+
+print([object in Duck.__bases__,])
+# test = Duck()
+# test.performQuack()
+mtest = MallardDuck()
+mtest.performQuack()
+mtest.performFly()
+
