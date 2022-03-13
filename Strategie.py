@@ -1,3 +1,4 @@
+# Strategie.py
 from abc import ABC, abstractclassmethod
 
 # Interface for fly and quack
