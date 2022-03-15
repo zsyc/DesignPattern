@@ -51,14 +51,37 @@ public:
 /* Base class */
 class Duck{
 public:
+    void swim(){ cout<<"all ducks float";}
+    void performQuack(){ quackBehavior->quack();}
+    void performFly(){ flyBehavior->fly();}
+    void setFlyBehavior(FlyBehavior *flyB){ flyBehavior = flyB;}
+    void setQuackBehavior(QuackBehavior *quackB){ quackBehavior = quackB;}
 
+    virtual ~Duck(){
+        delete flyBehavior;
+        delete quackBehavior;
+    }
+
+protected:
+    FlyBehavior *flyBehavior;
+    QuackBehavior *quackBehavior;
+};
+
+/* Test */
+class Modelduck: public Duck{
+public:
+    Modelduck(){    // can't use initializer list for lack of [existence] of the two Pointer
+        flyBehavior = new FlyNoWay;
+        quackBehavior = new Quack;
+    }
 };
 
 int main (){
-    FlyRocketPowered flytest;
-    flytest.fly();
-    Squeak quacktest;
-    quacktest.quack();
+    Modelduck test;
+    test.performQuack();
+    test.performFly();
+    test.setFlyBehavior(new FlyRocketPowered);
+    test.performFly();
 
     return 0;
 }
