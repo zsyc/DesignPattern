@@ -87,7 +87,7 @@ int main (){
     Modelduck test;
     test.performQuack();
     test.performFly();
-    test.setFlyBehavior(new FlyRocketPowered);
+    test.setFlyBehavior(new FlyRocketPowered());
     test.performFly();
 
     return 0;
