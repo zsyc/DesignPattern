@@ -1,1 +1,2 @@
 # DesignPattern
+* Strategy Pattern
