@@ -1,7 +1,10 @@
 /* Strategie.cpp */
 #include <iostream>
+#include <memory>
 
 using std::cout;
+using std::unique_ptr;
+using std::make_unique;
 
 /* Interface for fly and quack */
 /* Fly */
@@ -52,33 +55,29 @@ public:
 class Duck{
 public:
     void swim(){ cout<<"all ducks float";}
-    void performQuack(){ quackBehavior->quack();}
-    void performFly(){ flyBehavior->fly();}
-    void setFlyBehavior(FlyBehavior *flyB){ flyBehavior = flyB;}
-    void setQuackBehavior(QuackBehavior *quackB){ quackBehavior = quackB;}
+    void performQuack(){ sp_quackBehavior->quack();}
+    void performFly(){ sp_flyBehavior->fly();}
+    void setFlyBehavior(FlyBehavior *flyB){ sp_flyBehavior.reset(flyB);}
+    void setFlyBehavior(unique_ptr<FlyBehavior> flyB){ sp_flyBehavior = std::move(flyB);}   // 重载，为传递普通指针与智能指针作准备
 
     virtual ~Duck(){
         cout<<"Base Duck destructed\n";
     }
 
 protected:
-    FlyBehavior *flyBehavior;
-    QuackBehavior *quackBehavior;
+    unique_ptr<FlyBehavior> sp_flyBehavior;
+    unique_ptr<QuackBehavior> sp_quackBehavior;
 };
 
 /* Test */
 class Modelduck: public Duck{
 public:
     Modelduck(){    // can't use initializer list for lack of [existence] of the two Pointer
-        flyBehavior = new FlyNoWay(); // 带括号表明成员变量初始化,否则不一定,一般带上括号就好.
-        quackBehavior = new Quack();
+        sp_flyBehavior = make_unique<FlyNoWay>();
+        sp_quackBehavior = make_unique<Quack>();
         cout<<"Modelduck constructed\n";
     }
     ~Modelduck(){
-        delete flyBehavior;
-        delete quackBehavior;
-        flyBehavior = NULL;
-        quackBehavior = NULL;
         cout<<"Modelduck destructed\n";
     }
 };
@@ -88,6 +87,8 @@ int main (){
     test.performQuack();
     test.performFly();
     test.setFlyBehavior(new FlyRocketPowered());
+    test.performFly();
+    test.setFlyBehavior(make_unique<FlyWithWings>());
     test.performFly();
 
     return 0;
