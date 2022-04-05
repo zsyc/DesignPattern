@@ -10,45 +10,45 @@ using std::make_unique;
 /* Fly */
 class FlyBehavior{
 public:
-    virtual void fly() = 0;
+    virtual void fly() const = 0;
     virtual ~FlyBehavior() = default;
 };
 
 class FlyWithWings: public FlyBehavior{
 public:
-    void fly(){ cout<<"duck flying~\n";}
+    void fly() const override{ cout<<"duck flying~\n";}
 };
 
 class FlyNoWay: public FlyBehavior{
 public:
-    void fly(){ cout<<"duck cannot fly\n";}
+    void fly() const override{ cout<<"duck cannot fly\n";}
 };
 
 class FlyRocketPowered: public FlyBehavior{
 public:
-    void fly(){ cout<<"I'm flying with a rocket!\n";}
+    void fly() const override{ cout<<"I'm flying with a rocket!\n";}
 };
 
 /* Quack */
 class QuackBehavior{
 public:
-    virtual void quack() = 0;
+    virtual void quack() const = 0;
     virtual ~QuackBehavior() = default;
 };
 
 class Quack: public QuackBehavior{
 public:
-    void quack(){ cout<<"duck quacking\n";}
+    void quack() const override{ cout<<"duck quacking\n";}
 };
 
 class Squeak: public QuackBehavior{
 public:
-    void quack(){ cout<<"duckie squeak\n";}
+    void quack() const override{ cout<<"duckie squeak\n";}
 };
 
 class MuteQuack: public QuackBehavior{
 public:
-    void quack(){ cout<<"mute\n";}
+    void quack() const override{ cout<<"mute\n";}
 };
 
 /* Base class */
