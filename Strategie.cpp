@@ -58,8 +58,7 @@ public:
     void setQuackBehavior(QuackBehavior *quackB){ quackBehavior = quackB;}
 
     virtual ~Duck(){
-        delete flyBehavior;
-        delete quackBehavior;
+        cout<<"Base Duck destructed\n";
     }
 
 protected:
@@ -71,8 +70,16 @@ protected:
 class Modelduck: public Duck{
 public:
     Modelduck(){    // can't use initializer list for lack of [existence] of the two Pointer
-        flyBehavior = new FlyNoWay;
-        quackBehavior = new Quack;
+        flyBehavior = new FlyNoWay(); // 带括号表明成员变量初始化,否则不一定,一般带上括号就好.
+        quackBehavior = new Quack();
+        cout<<"Modelduck constructed\n";
+    }
+    ~Modelduck(){
+        delete flyBehavior;
+        delete quackBehavior;
+        flyBehavior = NULL;
+        quackBehavior = NULL;
+        cout<<"Modelduck destructed\n";
     }
 };
 
