@@ -38,8 +38,15 @@ public:
                 break;
             }
     }
-    void notifyObserver() const{
+
+    void notifyObserver() const override{
         for (auto i : observers) i->update(temperature, humidity, pressure);
+    }
+
+    void setMeasurements(float t, float h, float p){
+        temperature = t;
+        humidity = h;
+        pressure = p;
     }
 
 
