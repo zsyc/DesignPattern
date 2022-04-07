@@ -39,7 +39,7 @@ public:
             }
     }
     void notifyObserver() const{
-
+        for (auto i : observers) i->update(temperature, humidity, pressure);
     }
 
 
