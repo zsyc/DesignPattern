@@ -130,3 +130,7 @@ dmypy.json
 
 # C++
 *.out
+*.exe
+test.cpp
+
+.vscode/*

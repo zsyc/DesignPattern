@@ -8,81 +8,81 @@ using std::make_unique;
 
 /* Interface for fly and quack */
 /* Fly */
-class FlyBehavior{
+class FlyBehavior {
 public:
     virtual void fly() const = 0;
     virtual ~FlyBehavior() = default;
 };
 
-class FlyWithWings: public FlyBehavior{
+class FlyWithWings : public FlyBehavior {
 public:
-    void fly() const override{ cout<<"duck flying~\n";}
+    void fly() const override { cout << "duck flying~\n"; }
 };
 
-class FlyNoWay: public FlyBehavior{
+class FlyNoWay : public FlyBehavior {
 public:
-    void fly() const override{ cout<<"duck cannot fly\n";}
+    void fly() const override { cout << "duck cannot fly\n"; }
 };
 
-class FlyRocketPowered: public FlyBehavior{
+class FlyRocketPowered : public FlyBehavior {
 public:
-    void fly() const override{ cout<<"I'm flying with a rocket!\n";}
+    void fly() const override { cout << "I'm flying with a rocket!\n"; }
 };
 
 /* Quack */
-class QuackBehavior{
+class QuackBehavior {
 public:
     virtual void quack() const = 0;
     virtual ~QuackBehavior() = default;
 };
 
-class Quack: public QuackBehavior{
+class Quack : public QuackBehavior {
 public:
-    void quack() const override{ cout<<"duck quacking\n";}
+    void quack() const override { cout << "duck quacking\n"; }
 };
 
-class Squeak: public QuackBehavior{
+class Squeak : public QuackBehavior {
 public:
-    void quack() const override{ cout<<"duckie squeak\n";}
+    void quack() const override { cout << "duckie squeak\n"; }
 };
 
-class MuteQuack: public QuackBehavior{
+class MuteQuack : public QuackBehavior {
 public:
-    void quack() const override{ cout<<"mute\n";}
+    void quack() const override { cout << "mute\n"; }
 };
 
 /* Base class */
-class Duck{
+class Duck {
 public:
-    void swim(){ cout<<"all ducks float";}
-    void performQuack(){ sp_quackBehavior->quack();}
-    void performFly(){ sp_flyBehavior->fly();}
-    void setFlyBehavior(FlyBehavior *flyB){ sp_flyBehavior.reset(flyB);}
-    void setFlyBehavior(unique_ptr<FlyBehavior> flyB){ sp_flyBehavior = std::move(flyB);}   // 重载，为传递普通指针与智能指针作准备
+    void swim() { cout << "all ducks float"; }
+    void performQuack() { sp_quackBehavior->quack(); }
+    void performFly() { sp_flyBehavior->fly(); }
+    void setFlyBehavior(FlyBehavior *flyB) { sp_flyBehavior.reset(flyB); }
+    void setFlyBehavior(unique_ptr<FlyBehavior> flyB) { sp_flyBehavior = std::move(flyB); } // 重载，为传递普通指针与智能指针作准备
 
-    virtual ~Duck(){
-        cout<<"Base Duck destructed\n";
+    virtual ~Duck() {
+        cout << "Base Duck destructed\n";
     }
 
 protected:
-    unique_ptr<FlyBehavior> sp_flyBehavior;
+    unique_ptr<FlyBehavior>   sp_flyBehavior;
     unique_ptr<QuackBehavior> sp_quackBehavior;
 };
 
 /* Test */
-class Modelduck: public Duck{
+class Modelduck : public Duck {
 public:
-    Modelduck(){    // can't use initializer list for lack of [existence] of the two Pointer
+    Modelduck() { // can't use initializer list for lack of [existence] of the two Pointer
         sp_flyBehavior = make_unique<FlyNoWay>();
         sp_quackBehavior = make_unique<Quack>();
-        cout<<"Modelduck constructed\n";
+        cout << "Modelduck constructed\n";
     }
-    ~Modelduck(){
-        cout<<"Modelduck destructed\n";
+    ~Modelduck() {
+        cout << "Modelduck destructed\n";
     }
 };
 
-int main (){
+int main() {
     Modelduck test;
     test.performQuack();
     test.performFly();
